@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marcar Consulta</title>
+</head>
+<body>
+    <h1>Marcar Consulta</h1>
+
+    {% if hospitais %}
+        <h2>Hospitais com especialidade em {{ especialidade }} disponíveis no estado: {{ estado }}</h2>
+        <ul>
+            <h3>Nome do Hospital / Cidade / Estado / Especialidade</h3>
+            {% for hospital in hospitais %}
+                <button>
+                    {{ hospital.nome }} / {{ hospital.cidade }} / {{ hospital.estado }} / {{ hospital.especialidade }}
+                </button>
+                <br>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Não há hospitais disponíveis com essa especialidade neste estado.</p>
+    {% endif %}
+
+</body>
+</html>

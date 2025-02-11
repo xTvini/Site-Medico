@@ -4,10 +4,11 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as django_login
 from rolepermissions.checkers import has_role
 from projetoPainho.roles import Cliente, Admin
-from  . models import Cliente as ClienteModel, Admin as AdminModel
+from .models import Cliente as ClienteModel, Admin as AdminModel
 from django.contrib import messages
 from rolepermissions.roles import assign_role
 from django.utils.translation import gettext as _
+
 
 def cadastro(request):
     if request.method == 'GET':
@@ -42,9 +43,9 @@ def login(request):
         if user:
             django_login(request, user)
             if has_role(user, Admin):
-                return redirect("PIAdmin")
+                return redirect("paginaInicialAdmin")
             elif has_role(user, Cliente):
-                return redirect("PICliente")
+                return redirect("paginaInicialCliente")
             else:
                 messages.error(request, _("O usuário não tem um papel definido."))
                 return redirect("login")
@@ -54,7 +55,7 @@ def login(request):
 def plataforma(request):
     if request.user.is_authenticated:  
         if has_role(request.user, Admin):
-            return redirect("PIAdmin")
+            return redirect("paginaInicialAdmin")
         elif has_role(request.user, Cliente):
-            return redirect("PICliente")
+            return redirect("paginaInicialCliente")
     return HttpResponse(_('Você precisa estar logado'))

@@ -5,7 +5,6 @@ from django.db import models
 class Doctor(models.Model):
     firstname = models.CharField(max_length=255)
     lastname = models.CharField(max_length=255)
-    email = models.EmailField(max_length=254)
     telephone = models.CharField(max_length=20)
     especialidade = models.TextField(max_length=1000)
     crm = models.CharField(max_length=10)

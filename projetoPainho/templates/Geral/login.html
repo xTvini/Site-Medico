@@ -1,5 +1,4 @@
 {% load static %}
-{% load i18n %}
 
 <!DOCTYPE html>
 <html lang="PT-BR">
@@ -15,9 +14,7 @@
     crossorigin="anonymous"></script>
 </head>
 
-<body class="custom-bg d-flex flex-column justify-content-center align-items-center vh-100">
-  <div style="text-align: center;"><img src="{% static 'images/white-cesar.png' %}"  alt="logo cesar"></div>
-  
+<body class="custom-bg d-flex flex-column justify-content-center align-items-center vh-100">  
   <div class=" container-fluid d-flex justify-content-center align-items-center vh-100">
     <form class="login-form" method="POST" action="{% url 'login' %}">
       {% csrf_token %}
@@ -55,12 +52,5 @@
       {% endif %}
     </form>
   </div>
-
-  <footer class="container-fluid text-center" style="padding-bottom: 10px; background-color: rgba(255, 255, 255, 0.8); bottom: -200; width: 100%;">
-    <p>Para motivos de avaliação, deixamos algumas contas com relacionamentos configurados de professores, alunos, turmas e disciplinas. OBS: todas as senhas são 123.<br>
-      Professores: Ricardo Costa, Carol Melo, Pamela Lins, Ricardo Cesar.<br>
-      Alunos: Tiago Gurgel, Miguel Batista, Kauane Melo, Fernanda Ordonho, Rafael Barros, Vinicius Diniz.
-    </p>
-  </footer>
 </body>
 </html>

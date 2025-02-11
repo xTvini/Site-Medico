@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagina Inicial</title>
+</head>
+<body>
+    <h1>Selecione uma especialidade para ver os médicos</h1>
+    
+    <form method="get" action="{% url 'paginaInicialCliente' %}">
+        <label for="especialidade">Especialidade:</label>
+        <select name="especialidade" id="especialidade">
+            <option value="">Selecione uma especialidade</option>
+            {% for especialidade in especialidades %}
+                <option value="{{ especialidade }}" {% if especialidade == request.GET.especialidade %}selected{% endif %}>
+                    {{ especialidade }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <label for="estado">Estado:</label>
+        <select name="estado" id="estado">
+            <option value="">Selecione seu estado</option>
+            {% for estado_item in estado %}
+                <option value="{{ estado_item }}" {% if estado_item == request.GET.estado %}selected{% endif %}>
+                    {{ estado_item }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Filtrar</button>
+    </form>
+
+    {% if doctors %}
+        <h2>Médicos disponíveis:</h2>
+        <ul>
+            <h3>Informações do médico</h3>
+            <h4>Nome / Especialidade / CRM / Estado de Origem</h4>
+        {% for doctor in doctors %}
+        <form method="get" action="{% url 'marcarConsulta' %}">
+            <input type="hidden" name="especialidade" value="{{ doctor.especialidade }}">
+                <input type="hidden" name="estado" value="{{ doctor.estado }}">
+                    <button type="submit">
+                        {{ doctor.firstname }} {{ doctor.lastname }} / {{ doctor.especialidade }} / {{ doctor.crm }} / {{ doctor.estado }}
+                </button>
+            </form>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Selecione uma especialidade para ver os médicos.</p>
+    {% endif %}
+
+    <script>
+        document.querySelectorAll(".selecionar-medico").forEach(button => {
+            button.addEventListener("click", function() {
+                const medicoId = this.getAttribute("data-id");
+                const estado = this.getAttribute("data-estado");
+
+                // Redireciona para a página de marcação de consulta com os parâmetros do médico
+                window.location.href = `{% url 'marcarConsulta' %}?id=${medicoId}&estado=${estado}`;
+            });
+        });
+    </script>
+</body>
+</html>

@@ -6,15 +6,17 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from . models import Doctor,Hospital
 
-def index(request):
-    return redirect("PIAdmin")
+@login_required
+def PIAdmin(request):
+    doctor = Doctor.objects.all()
+    hospital = Hospital.objects.all()
+    return render(request,"Admin\paginaInicialAdmin.html",{"doctor": doctor,"hospital": hospital})
 
 @login_required
 def Doctor_create(request):
     if request.method == "POST":
         nome = request.POST["nome"]
         sobrenome = request.POST["sobrenome"]
-        email = request.POST["email"]
         telefone = request.POST["telefone"]
         especialidade = request.POST["especialidade"]
         crm = request.POST["crm"]
@@ -22,7 +24,6 @@ def Doctor_create(request):
         doctor = Doctor(
             firstname=nome,
             lastname=sobrenome,
-            email=email,
             telephone=telefone,
             especialidade=especialidade,
             crm=crm,
@@ -30,34 +31,53 @@ def Doctor_create(request):
         )
         doctor.save()
         messages.info(request, "Medico criado com sucesso")
-        return redirect("PIAdmin")
+        return redirect("paginaInicialAdmin")
     else:
         return render(request, "Admin/cadastrarMedico.html")
 
 @login_required
+def Hospital_Create(request):
+    if request.method == "POST":
+        nome = request.POST["nome"]
+        endereco = request.POST["endereco"]
+        telefone = request.POST["telefone"]
+        especialidade = request.POST["especialidade"]
+        cidade = request.POST["cidade"]
+        estado = request.POST["estado"]
+        hospital = Hospital(
+            nome = nome,
+            endereco = endereco,
+            telefone = telefone,
+            especialidade = especialidade,
+            cidade = cidade,
+            estado = estado,
+        )
+        hospital.save()
+        messages.info(request, "Medico criado com sucesso")
+        return redirect("paginaInicialAdmin")
+    else:
+        return render(request, "Admin/cadastrarHospital.html")
+        
+@login_required
 def Doctor_delete(request,id):
     doctor = get_object_or_404(Doctor,id=id)
-    if request.methd == "POST":
+    if request.method == "POST":
         doctor.delete()
-        return redirect("")
-    return render(request, "Admin/deletarMedico",{"doctor":doctor})
+        return redirect(request,"paginaInicialAdmin")
+    return render(request, "Admin/paginaInicialAdmin",{"doctor":doctor})
     
 @login_required
 def Doctor_edit(request, id):
     doctor = get_object_or_404(Doctor,id=id)
     if request.method == "POST":
-        doctor.firstname = request.POST
         doctor.firstname = request.POST["nome"]
         doctor.lastname = request.POST["sobrenome"]
-        doctor.email = request.POST["email"]
         doctor.telephone = request.POST["telefone"]
         doctor.especialidade=request.POST["especialidade"]
-        doctor.crm=request.POST["crm"],
-        doctor.estado=request.POST["estado"],
+        doctor.crm=request.POST["crm"]
+        doctor.estado=request.POST["estado"]
         doctor.save()
         messages.info(request, "Cliente editado com sucesso")
-        return redirect("PIAdmin")
+        return redirect(request,"paginaInicialAdmin")
     else:
         return render(request, "Admin/editarMedico.html", {"doctor": doctor})
-    
-
