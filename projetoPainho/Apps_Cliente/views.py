@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from Apps_Admin.models import Doctor, Hospital
+from .models import Doctor, Hospital, Consulta
+import json
 
 @login_required
 def PAGINAINICIALCLIENTE(request):
@@ -28,3 +29,20 @@ def marcarConsulta(request):
     hospitais = Hospital.objects.filter(estado=selected_estado, especialidade=selected_especialidade)
 
     return render(request, "Clientes/marcarConsulta.html", {'estado': selected_estado,'especialidade': selected_especialidade,'hospitais': hospitais})
+
+@login_required
+def calendario(request):
+    consultas = Consulta.objects.all()
+
+    eventos = [
+        {
+            "titulo": consulta.titulo,
+            "descricao": f"Médico: {consulta.medico.firstname} ({consulta.medico.crm} - {consulta.medico.estado})",
+            "data": consulta.data.strftime("%Y-%m-%d"),
+            "horario": consulta.horario.strftime("%H:%M") if consulta.horario else "",
+            "hospital": consulta.hospital.nome,
+        }
+        for consulta in consultas
+    ]
+    dias_da_semana = ['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SAB']
+    return render(request, "Clientes/calendario.html", {"eventos_json": json.dumps(eventos), "dias_da_semana": dias_da_semana})
