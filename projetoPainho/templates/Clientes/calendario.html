@@ -40,17 +40,17 @@
 </section>
 
 <div class="custom-event-details event-text slide-container">
-    {% for evento in eventos %}
+    {% for consulta in consultas %}
         <div class="custom-slide-box">
             <div class="custom-slide-header">
-                <h2>{{ evento.titulo }}</h2>
-                <h3>{{ evento.hospital }}</h3>
-                <h3>{{ evento.disciplina.nome }}</h3>
+                <h2>{{ consulta.titulo }}</h2>
+                <h3>{{ consulta.hospital.nome }}</h3>
+                <h3>{{ consulta.medico.nome }}</h3>
             </div>
             <div class="custom-slide-content">
-                <p>{% trans "Descrição" %}: {{ evento.descricao }}</p>
-                <p>{% trans "Data" %}: {{ evento.data }}</p>
-                <p>{% trans "Horário" %}: {{ evento.horario }}</p>
+                <p>{% trans "Especialidade" %}: {{ consulta.especialidade }}</p>
+                <p>{% trans "Data" %}: {{ consulta.data }}</p>
+                <p>{% trans "Horário" %}: {{ consulta.horario }}</p>
             </div>
         </div>
     {% endfor %}
@@ -59,27 +59,38 @@
 <div id="eventForm" class="form-container" style="display: none;">
     <form method="post" id="addEventForm">
         {% csrf_token %}
-        <label for="titulo">{% trans "Título:" %}</label><br>
-        <input type="text" id="titulo" name="titulo" required><br>
+        <label for="descricao">{% trans "Descrição:" %}</label><br>
+        <input type="text" id="descricao" name="descricao" required><br>
 
-        <label for="descricao">{% trans "Descrição" %}:</label><br>
-        <textarea id="descricao" name="descricao"></textarea><br>
+        <label for="doctor">{% trans "doctor" %}:</label>
+        <select name="doctor" id="doctor" required>
+            {% for doctor in medicos %}
+                <option value="{{ doctor.id }}">{{ doctor.especialidade }}</option>
+            {% endfor %}
+        </select><br>
 
         <label for="data">{% trans "Data" %}:</label><br>
         <input type="date" name="data" id="data" required><br>
 
         <label for="horario">{% trans "Horário" %}:</label><br>
-        <input type="time" id="horario" name="horario"><br>
+        <input type="time" id="horario" name="horario" step="3600" required><br>
 
-        <label for="disciplina">{% trans "Disciplina" %}:</label>
-        <select name="disciplina" id="disciplina" required>
-            {% for disciplina in disciplinas %}
-                <option value="{{ disciplina.id }}">{{ disciplina.nome }}</option>
+        <label for="hospital">{% trans "Hospital" %}:</label>
+        <select name="hospital" id="hospital" required>
+            {% for hospital in hospitais %}
+                <option value="{{ hospital.id }}">{{ hospital.nome }}</option>
+            {% endfor %}
+        </select><br>
+
+        <label for="doctor">{% trans "doctor" %}:</label>
+        <select name="doctor" id="doctor" required>
+            {% for doctor in medicos %}
+                <option value="{{ doctor.id }}">{{ doctor.firstname }}</option>
             {% endfor %}
         </select><br>
 
         <button class="send">
-            <span>{% trans "Enviar" %}</span>
+            <span>{% trans "Marcar Consulta" %}</span>
         </button>
     </form>
 </div>
@@ -87,6 +98,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const date = new Date();
+    
     const renderCalendar = () => {
         date.setDate(1);
         const monthDays = document.querySelector(".days");
@@ -108,23 +120,42 @@ document.addEventListener('DOMContentLoaded', function() {
             if (i === new Date().getDate() && date.getMonth() === new Date().getMonth()) {
                 dayClass = "today";
             }
-            days += `<div class="${dayClass}" data-date="${date.getFullYear()}-${date.getMonth()+1}-${i}">${i}</div>`;
+            days += `<div class="${dayClass}" data-date="${date.getFullYear()}-${(date.getMonth()+1).toString().padStart(2, '0')}-${i.toString().padStart(2, '0')}">${i}</div>`;
         }
         for (let j = 1; j <= nextDays; j++) {
             days += `<div class="next-date">${j}</div>`;
         }
         monthDays.innerHTML = days;
+        addEventClickListeners();
+    };
+
+    const addEventClickListeners = () => {
+        const days = document.querySelectorAll('.days div');
+        const eventForm = document.getElementById('eventForm');
+        const dateInput = document.getElementById('data');
+
+        days.forEach(day => {
+            day.addEventListener('dblclick', function() {
+                const selectedDate = day.getAttribute('data-date');
+                dateInput.value = selectedDate;
+                eventForm.style.display = 'block';
+                eventForm.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
     };
 
     document.querySelector(".prev").addEventListener("click", () => {
         date.setMonth(date.getMonth() - 1);
         renderCalendar();
     });
+    
     document.querySelector(".next").addEventListener("click", () => {
         date.setMonth(date.getMonth() + 1);
         renderCalendar();
     });
+
     renderCalendar();
 });
 </script>
+
 {% endblock %}
