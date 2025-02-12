@@ -14,15 +14,16 @@
             <h3>Nome do Hospital / Cidade / Estado / Especialidade</h3>
             {% for hospital in hospitais %}
                 <form method="get" action="{% url 'calendario' %}">
+                    <input type="hidden" name="hospital_id" value="{{ hospital.id }}">
+                    <input type="hidden" name="medico_id" value="{{ request.GET.medico_id }}">
                     <button>
-                    {{ hospital.nome }} / {{ hospital.cidade }} / {{ hospital.estado }} / {{ hospital.especialidade }}
-                </button>       
+                        {{ hospital.nome }} / {{ hospital.cidade }} / {{ hospital.estado }} / {{ hospital.especialidade }}
+                    </button>       
                 </form>
             {% endfor %}
         </ul>
     {% else %}
         <p>Não há hospitais disponíveis com essa especialidade neste estado.</p>
     {% endif %}
-
 </body>
 </html>

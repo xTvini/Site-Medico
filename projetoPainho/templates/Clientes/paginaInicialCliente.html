@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagina Inicial</title>
+    <title>Página Inicial</title>
 </head>
 <body>
     <h1>Selecione uma especialidade para ver os médicos</h1>
@@ -37,30 +37,19 @@
         <ul>
             <h3>Informações do médico</h3>
             <h4>Nome / Especialidade / CRM / Estado de Origem</h4>
-        {% for doctor in doctors %}
-        <form method="get" action="{% url 'marcarConsulta' %}">
-            <input type="hidden" name="especialidade" value="{{ doctor.especialidade }}">
-                <input type="hidden" name="estado" value="{{ doctor.estado }}">
+            {% for doctor in doctors %}
+                <form method="get" action="{% url 'marcarConsulta' %}">
+                    <input type="hidden" name="especialidade" value="{{ doctor.especialidade }}">
+                    <input type="hidden" name="estado" value="{{ doctor.estado }}">
+                    <input type="hidden" name="medico_id" value="{{ doctor.id }}">
                     <button type="submit">
                         {{ doctor.firstname }} {{ doctor.lastname }} / {{ doctor.especialidade }} / {{ doctor.crm }} / {{ doctor.estado }}
-                </button>
-            </form>
-        {% endfor %}
+                    </button>
+                </form>
+            {% endfor %}
         </ul>
     {% else %}
         <p>Selecione uma especialidade para ver os médicos.</p>
     {% endif %}
-
-    <script>
-        document.querySelectorAll(".selecionar-medico").forEach(button => {
-            button.addEventListener("click", function() {
-                const medicoId = this.getAttribute("data-id");
-                const estado = this.getAttribute("data-estado");
-
-                // Redireciona para a página de marcação de consulta com os parâmetros do médico
-                window.location.href = `{% url 'marcarConsulta' %}?id=${medicoId}&estado=${estado}`;
-            });
-        });
-    </script>
 </body>
 </html>
