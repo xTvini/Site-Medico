@@ -43,9 +43,16 @@
     {% for consulta in consultas %}
         <div class="custom-slide-box">
             <div class="custom-slide-header">
-                <h2>{{ consulta.titulo }}</h2>
-                <h3>{{ consulta.hospital.nome }}</h3>
-                <h3>{{ consulta.medico.nome }}</h3>
+                <h2>Motivo da Consulta: {{ consulta.titulo }}</h2>
+                <h3>Nome do Paciente: {{ consulta.paciente }}</h3>
+                <br>
+                <h3>Informações Hospitalares:<br> {{ consulta.hospital.nome }} / {{consulta.hospital.cidade}} / {{consulta.hospital.estado}}
+                    <br>
+                    {{consulta.hospital.endereco}}</h3>
+                <br><h3>Informações Medicas:<br>
+                    Nome / CRM :<br>
+                    {{ consulta.medico.firstname }} {{ consulta.medico.lastname }} / {{consulta.medico.crm}}
+            </h3>
             </div>
             <div class="custom-slide-content">
                 <p>{% trans "Especialidade" %}: {{ consulta.especialidade }}</p>
@@ -62,14 +69,14 @@
         <input type="hidden" name="hospital_id" value="{{ request.GET.hospital_id }}">
         <input type="hidden" name="medico_id" value="{{ request.GET.medico_id }}">
 
-        <label for="descricao">{% trans "Descrição:" %}</label><br>
+        <label for="descricao">{% trans "Motivo da Consulta:" %}</label><br>
         <input type="text" id="descricao" name="descricao" required><br>
 
         <label for="data">{% trans "Data" %}:</label><br>
         <input type="date" name="data" id="data" required><br>
 
         <label for="horario">{% trans "Horário" %}:</label><br>
-        <input type="time" id="horario" name="horario" step="3600" required><br>
+        <input type="time" id="horario" name="horario" step="3600"  value="00:00" required><br>
 
         <button class="send">
             <span>{% trans "Marcar Consulta" %}</span>
