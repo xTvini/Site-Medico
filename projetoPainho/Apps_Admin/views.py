@@ -59,25 +59,25 @@ def Hospital_Create(request):
         return render(request, "Admin/cadastrarHospital.html")
         
 @login_required
-def Doctor_delete(request,id):
-    doctor = get_object_or_404(Doctor,id=id)
+def Doctor_delete(request, id):
+    doctor = get_object_or_404(Doctor, id=id)
     if request.method == "POST":
         doctor.delete()
-        return redirect(request,"paginaInicialAdmin")
-    return render(request, "Admin/paginaInicialAdmin",{"doctor":doctor})
-    
+        return redirect("paginaInicialAdmin")
+    return render(request, "Admin/deletarMedico.html", {"doctor": doctor})
+
 @login_required
 def Doctor_edit(request, id):
-    doctor = get_object_or_404(Doctor,id=id)
+    doctor = get_object_or_404(Doctor, id=id)  # Busca o médico pelo ID
     if request.method == "POST":
         doctor.firstname = request.POST["nome"]
         doctor.lastname = request.POST["sobrenome"]
         doctor.telephone = request.POST["telefone"]
-        doctor.especialidade=request.POST["especialidade"]
-        doctor.crm=request.POST["crm"]
-        doctor.estado=request.POST["estado"]
+        doctor.especialidade = request.POST["especialidade"]
+        doctor.crm = request.POST["crm"]
+        doctor.estado = request.POST["estado"]
         doctor.save()
-        messages.info(request, "Cliente editado com sucesso")
-        return redirect(request,"paginaInicialAdmin")
+        messages.info(request, "Médico editado com sucesso")
+        return redirect("paginaInicialAdmin")
     else:
         return render(request, "Admin/editarMedico.html", {"doctor": doctor})

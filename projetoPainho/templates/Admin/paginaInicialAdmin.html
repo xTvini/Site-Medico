@@ -1,4 +1,4 @@
-{%load static%}
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -18,25 +18,26 @@
                 <th>Especialidade</th>
                 <th>CRM</th>
                 <th>Estado</th>
+                <th>Ações</th>
             </tr>
         </thead>
         <tbody>
-            {% for doctor in doctor %}            
+            {% for doctor in doctor %}
             <tr>
-                <td>{{ doctor.firstname }} {{doctor.lastname}}</td>
+                <td>{{ doctor.firstname }} {{ doctor.lastname }}</td>
                 <td>{{ doctor.especialidade }}</td>
                 <td>{{ doctor.crm }}</td>
                 <td>{{ doctor.estado }}</td>
+                <td><a href="{% url 'editarMedico' doctor.id %}" class="btn btn-primary btn-sm">Editar</a><a href="{% url 'deletarMedico' doctor.id %}" class="btn btn-danger btn-sm">Deletar</a></td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="4" class="text-center">Nenhum doutor cadastrado.</td>
+                <td colspan="5" class="text-center">Nenhum doutor cadastrado.</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
     <div class="button-container">
-        <!-- Botão para Cadastrar Médico -->
         <a href="{% url 'cadastrarMedico' %}" method="POST">
             {% csrf_token %}
             <button class="btn">Cadastrar Médico</button>
@@ -55,23 +56,23 @@
             </tr>
         </thead>
         <tbody>
-            {% for hospital in hospital %}            
+            {% for hospital in hospital %}
             <tr>
                 <td>{{ hospital.nome }}</td>
                 <td>{{ hospital.endereco }}</td>
                 <td>{{ hospital.telefone }}</td>
                 <td>{{ hospital.especialidade }}</td>
                 <td>{{ hospital.cidade }} / {{ hospital.estado }}</td>
+                <td><a href="{% url 'editarHospital' hospital.id %}" class="btn btn-primary btn-sm">Editar</a><a href="{% url 'deletarHospital' hospital.id %}" class="btn btn-danger btn-sm">Deletar</a></td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="4" class="text-center">Nenhum doutor cadastrado.</td>
+                <td colspan="5" class="text-center">Nenhum hospital cadastrado.</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
     <div class="button-container">
-        <!-- Botão para Cadastrar Hospital -->
         <a href="{% url 'cadastrarHospital' %}" method="POST">
             {% csrf_token %}
             <button class="btn">Cadastrar Hospital</button>

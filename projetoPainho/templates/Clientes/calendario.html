@@ -123,8 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const eventForm = document.getElementById('eventForm');
         const dateInput = document.getElementById('data');
 
-        days.forEach(day => {
-            day.addEventListener('dblclick', function() {
+        days.forEach(day => {day.addEventListener('dblclick', function() {
                 const selectedDate = day.getAttribute('data-date');
                 dateInput.value = selectedDate;
                 eventForm.style.display = 'block';
