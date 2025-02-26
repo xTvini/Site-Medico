@@ -1,0 +1,23 @@
+{% load static%}
+<div class="masthead-content text-center text-white">
+    <div class="bg-dark m-4 p-2 w-50 container px-5 rounded">
+        <form method="post">
+            {% csrf_token %}
+            <h1>Editar Hospital</h1>
+            {% for message in messages %}<h5>{{ message }}</h5>{% endfor %}
+            <p>Nome</p>
+            <input type="text" name="nome" class="subheading mb-3 form-control" value="{{hospital.nome}}" />
+            <p>Endereco</p>
+            <input type="text" name="endereco" class="subheading mb-3 form-control" value="{{hospital.endereco}}"/>
+            <p>Telefone</p>
+            <input type="text" name="telefone" class="subheading mb-3 form-control" value="{{hospital.telefone}}"/>
+            <p>especialidade</p>
+            <input type="text" name="especialidade" class="subheading mb-3 form-control" value="{{hospital.especialidade}}"/>
+            <p>cidade</p>
+            <input type="text" name="cidade" class="subheading mb-3 form-control" value="{{hospital.cidade}}"/>
+            <p>estado</p>
+            <input type="text" name="estado" class="subheading mb-3 form-control" value="{{hospital.estado}}"/>
+            <input type="submit" class="btn btn-primary btn-l rounded-pill" value="Salvar Alterações" />
+        </form>
+    </div>
+</div>

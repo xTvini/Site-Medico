@@ -1,7 +1,7 @@
 {% load static %}
     <div class="masthead-content text-center text-white">
         <div class="bg-dark m-4 p-2 w-50 container px-5 rounded">
-            <h2>Tem certeza que deseja excluir o cliente "{{ cliente.firstname }}"?</h2>
+            <h2>Tem certeza que deseja excluir o medico "{{ doctor.firstname }} {{doctor.lastname}}"?</h2>
             <form method="post">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-primary btn-l rounded-pill">Confirmar Exclusão</button>

@@ -28,7 +28,7 @@
                 <td>{{ doctor.especialidade }}</td>
                 <td>{{ doctor.crm }}</td>
                 <td>{{ doctor.estado }}</td>
-                <td><a href="{% url 'editarMedico' doctor.id %}" class="btn btn-primary btn-sm">Editar</a><a href="{% url 'deletarMedico' doctor.id %}" class="btn btn-danger btn-sm">Deletar</a></td>
+                <td><a href="{% url 'editarMedico' doctor.id %}" class="btn btn-primary btn-sm">Editar</a> <a href="{% url 'deletarMedico' doctor.id %}" class="btn btn-danger btn-sm">Deletar</a></td>
             </tr>
             {% empty %}
             <tr>
@@ -53,6 +53,7 @@
                 <th>Telefone</th>
                 <th>Especialidade</th>
                 <th>Cidade / Estado</th>
+                <th>Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -63,7 +64,7 @@
                 <td>{{ hospital.telefone }}</td>
                 <td>{{ hospital.especialidade }}</td>
                 <td>{{ hospital.cidade }} / {{ hospital.estado }}</td>
-                <td><a href="{% url 'editarHospital' hospital.id %}" class="btn btn-primary btn-sm">Editar</a><a href="{% url 'deletarHospital' hospital.id %}" class="btn btn-danger btn-sm">Deletar</a></td>
+                <td><a href="{% url 'editarHospital' hospital.id %}" class="btn btn-primary btn-sm">Editar</a> <a href="{% url 'deletarHospital' hospital.id %}" class="btn btn-danger btn-sm">Deletar</a></td>
             </tr>
             {% empty %}
             <tr>

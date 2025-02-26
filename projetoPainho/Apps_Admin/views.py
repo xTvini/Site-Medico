@@ -36,6 +36,30 @@ def Doctor_create(request):
         return render(request, "Admin/cadastrarMedico.html")
 
 @login_required
+def Doctor_delete(request, id):
+    doctor = get_object_or_404(Doctor, id=id)
+    if request.method == "POST":
+        doctor.delete()
+        return redirect("paginaInicialAdmin")
+    return render(request, "Admin/deletarMedico.html", {"doctor": doctor})
+
+@login_required
+def Doctor_edit(request, id):
+    doctor = get_object_or_404(Doctor, id=id)
+    if request.method == "POST":
+        doctor.firstname = request.POST["nome"]
+        doctor.lastname = request.POST["sobrenome"]
+        doctor.telephone = request.POST["telefone"]
+        doctor.especialidade = request.POST["especialidade"]
+        doctor.crm = request.POST["crm"]
+        doctor.estado = request.POST["estado"]
+        doctor.save()
+        messages.info(request, "Médico editado com sucesso")
+        return redirect("paginaInicialAdmin")
+    else:
+        return render(request, "Admin/editarMedico.html", {"doctor": doctor})
+
+@login_required
 def Hospital_Create(request):
     if request.method == "POST":
         nome = request.POST["nome"]
@@ -57,27 +81,27 @@ def Hospital_Create(request):
         return redirect("paginaInicialAdmin")
     else:
         return render(request, "Admin/cadastrarHospital.html")
-        
+    
 @login_required
-def Doctor_delete(request, id):
-    doctor = get_object_or_404(Doctor, id=id)
+def Hospital_edit(request,id):
+    hospital = get_object_or_404(Hospital,id=id)
     if request.method == "POST":
-        doctor.delete()
-        return redirect("paginaInicialAdmin")
-    return render(request, "Admin/deletarMedico.html", {"doctor": doctor})
-
-@login_required
-def Doctor_edit(request, id):
-    doctor = get_object_or_404(Doctor, id=id)  # Busca o médico pelo ID
-    if request.method == "POST":
-        doctor.firstname = request.POST["nome"]
-        doctor.lastname = request.POST["sobrenome"]
-        doctor.telephone = request.POST["telefone"]
-        doctor.especialidade = request.POST["especialidade"]
-        doctor.crm = request.POST["crm"]
-        doctor.estado = request.POST["estado"]
-        doctor.save()
-        messages.info(request, "Médico editado com sucesso")
+        hospital.nome = request.POST["nome"]
+        hospital.endereco = request.POST["endereco"]
+        hospital.telefone = request.POST["telefone"]
+        hospital.especialidade = request.POST["especialidade"]
+        hospital.cidade = request.POST["cidade"]
+        hospital.estado = request.POST["estado"]
+        hospital.save()
+        messages.info(request, "Hospital editado com sucesso")
         return redirect("paginaInicialAdmin")
     else:
-        return render(request, "Admin/editarMedico.html", {"doctor": doctor})
+        return render(request, "Admin/editarHospital.html", {"hospital": hospital})
+
+@login_required
+def Hospital_delete(request, id):
+    hospital = get_object_or_404(Hospital, id=id)
+    if request.method == "POST":
+        hospital.delete()
+        return redirect("paginaInicialAdmin")
+    return render(request, "Admin/deletarHospital.html", {"hospital": hospital})
